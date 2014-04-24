@@ -322,4 +322,24 @@ class Bytes {
 		#end
 	}
 
+	/**
+		Read the most efficiently possible the n-th byte of the data.
+		Behavior when reading outside of the available data is unspecified.
+	**/
+	public inline static function fastGet( b : BytesData, pos : Int ) : Int {
+		#if neko
+		return untyped __dollar__sget(b,pos);
+		#elseif flash9
+		return b[pos];
+		#elseif php
+		return untyped __call__("ord", b[pos]);
+		#elseif cpp
+		return untyped b.unsafeGet(pos);
+		#elseif java
+		return untyped b[pos] & 0xFF;
+		#else
+		return b[pos];
+		#end
+	}
+
 }
